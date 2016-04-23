@@ -2,7 +2,13 @@ FROM kylemanna/openvpn
 
 MAINTAINER Mesosphere <team@mesosphere.com>
 
-RUN apk -U add ca-certificates python py-setuptools
+RUN apk -U add \
+    bind-tools \
+    ca-certificates \
+    curl \
+    jq \
+    py-setuptools \
+    python
 
 COPY . /dcos
 

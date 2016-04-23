@@ -22,7 +22,8 @@ function globals {
   export CA_CN=${CA_CN:="openvpn.dcos"}
   export ZKPATH=${ZKPATH:="/dcos-vpn"}
   export ZKCLI=${ZKCLI:="zk-shell"}
-  export ZKURL=${ZKURL:="master.mesos:2181"}
+  #export ZKURL=${ZKURL:="master.mesos:2181"}
+  export ZKURL=${ZKURL:="$(for h in $(host master.mesos | cut -f4 -d' '); do echo $h:2181; done;)"}
   export CONFIG_LOCATION=${CONFIG_LOCATION:="/etc/openvpn"}
 
   export HOST=${HOST:=127.0.0.1}
@@ -94,7 +95,8 @@ function set_public_location {
   source $OPENVPN/ovpn_env.sh
   (run_command "ls $loc") || (run_command "create $loc ''")
 
-  run_command "set $loc \"remote $(wget -O - -U curl ifconfig.me) $PORT0 $OVPN_PROTO\""
+  local ip=$(curl 'https://api.ipify.org?format=json' -s | jq -r .ip)
+  run_command "set $loc \"remote ${ip} $PORT0 $OVPN_PROTO\""
 }
 
 function server {

@@ -381,7 +381,7 @@ init_pki() {
 	vars_source_check
 
 	# If EASYRSA_PKI exists, confirm before we rm -rf (skiped with EASYRSA_BATCH)
-	if [ -e "$EASYRSA_PKI" ]; then
+	if [ -d "$EASYRSA_PKI" ]; then
 		confirm "Confirm removal: " "yes" "
 WARNING!!!
 
